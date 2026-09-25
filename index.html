@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WorldClock — Current Time Around the World</title>
+  <meta name="description" content="Check the current time in cities and time zones around the world with WorldClock.">
+  <meta name="keywords" content="world clock, current time, time zones, time zone converter, local time">
+  <meta name="theme-color" content="#0b1120">
+  <!-- Open Graph. When you have a domain, add: <meta property="og:url" content="https://your-domain"> -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="WorldClock">
+  <meta property="og:title" content="WorldClock — Current Time Around the World">
+  <meta property="og:description" content="Check the current time in cities and time zones around the world with WorldClock.">
+  <!-- Inline favicon: no extra request -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🕐%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <meta name="google-site-verification" content="uXB6RIiq4QQGBT2TfIE_eyKM8EWgsf-LoHD8CmDsemQ" />
+  <meta name="google-adsense-account" content="ca-pub-9825831637657286">
+ <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9825831637657286"
+     crossorigin="anonymous"></script>
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to content</a>
+  <noscript><div class="error">JavaScript is turned off. Turn it on in your browser to see live clocks.</div></noscript>
+  <div id="errorBox" class="error" role="alert" hidden></div>
+
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="logo" href="#top" aria-label="WorldClock, back to top"><span aria-hidden="true">🕐</span> WorldClock</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a href="#local">My time</a></li>
+          <li><a href="#world">World clock</a></li>
+          <li><a href="#converter">Converter</a></li>
+          <li><a href="#timezones">Time zones</a></li>
+        </ul>
+      </nav>
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Time format">
+          <button id="fmt12" type="button" aria-pressed="false">12-hour</button>
+          <button id="fmt24" type="button" aria-pressed="true">24-hour</button>
+        </div>
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="Switch to light theme">☀️</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="wrap">
+        <h1 id="heroTitle">Current Time Around the World</h1>
+        <p class="lead">Check the current local time in cities around the world.</p>
+        <div class="search" role="search">
+          <label class="sr" for="search">Search a city</label>
+          <input id="search" type="search" placeholder="Search a city..." autocomplete="off" spellcheck="false">
+        </div>
+        <p id="resultCount" class="muted" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="local" class="wrap section" aria-labelledby="localTitle">
+      <h2 id="localTitle">Your Local Time</h2>
+      <div class="local panel">
+        <div>
+          <p class="muted" id="localZone">Detecting your time zone…</p>
+          <p class="time big" id="localTime">--:--:--</p>
+        </div>
+        <div>
+          <p id="localDate" class="strong"></p>
+          <p class="muted" id="localMeta"></p>
+          <button id="useLocal" class="btn primary" type="button">Use my local time</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- AD SLOT 1 -->
+    <aside class="ad-slot" id="adTop" aria-label="Advertisement"><span>[ Advertisement ]</span></aside>
+
+    <section id="favorites" class="wrap section" aria-labelledby="favTitle">
+      <h2 id="favTitle">Favorite Cities</h2>
+      <div id="favGrid" class="grid"></div>
+      <p id="noFavs" class="empty" hidden>No favorites yet. Use “Add to favorites” on any city below.</p>
+    </section>
+
+    <section id="world" class="wrap section" aria-labelledby="worldTitle">
+      <h2 id="worldTitle">World Clock</h2>
+      <div id="cityGrid" class="grid"></div>
+      <p id="noResults" class="empty" hidden>No city found. Check the spelling or try a shorter search.</p>
+    </section>
+
+    <!-- AD SLOT 2 -->
+    <aside class="ad-slot" id="adMiddle" aria-label="Advertisement"><span>[ Advertisement ]</span></aside>
+
+    <section id="converter" class="wrap section" aria-labelledby="convTitle">
+      <h2 id="convTitle">Time Zone Converter</h2>
+      <div class="panel">
+        <div class="conv">
+          <div class="field"><label for="convFrom">From</label><select id="convFrom"></select></div>
+          <div class="field"><label for="convTo">To</label><select id="convTo"></select></div>
+          <div class="field"><label for="convDate">Date</label><input id="convDate" type="date"></div>
+          <div class="field"><label for="convTime">Time</label><input id="convTime" type="time"></div>
+        </div>
+        <button id="swap" class="btn" type="button">Swap cities</button>
+        <p id="convResult" class="result" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="timezones" class="wrap section" aria-labelledby="tzTitle">
+      <h2 id="tzTitle">Popular Time Zones</h2>
+      <p class="muted">Offsets are shown against UTC. Many regions change their offset in summer (daylight saving time).</p>
+      <div class="grid">
+        <article class="tz"><h3>UTC</h3><p class="muted">Coordinated Universal Time (UTC+0)</p><p>The global reference used to define all other time zones. It never changes for daylight saving.</p></article>
+        <article class="tz"><h3>GMT</h3><p class="muted">Greenwich Mean Time (UTC+0)</p><p>The mean solar time at Greenwich. The UK uses it in winter and switches to BST (UTC+1) in summer.</p></article>
+        <article class="tz"><h3>CET</h3><p class="muted">Central European Time (UTC+1)</p><p>Used in much of Europe in winter. In summer, these countries move to CEST (UTC+2).</p></article>
+        <article class="tz"><h3>EST</h3><p class="muted">Eastern Standard Time (UTC−5)</p><p>Used in eastern US and Canada in winter. In summer it becomes EDT (UTC−4).</p></article>
+        <article class="tz"><h3>PST</h3><p class="muted">Pacific Standard Time (UTC−8)</p><p>Used on the US and Canada west coast in winter. In summer it becomes PDT (UTC−7).</p></article>
+        <article class="tz"><h3>JST</h3><p class="muted">Japan Standard Time (UTC+9)</p><p>The time zone of Japan. Japan does not use daylight saving time.</p></article>
+        <article class="tz"><h3>AEST</h3><p class="muted">Australian Eastern Standard Time (UTC+10)</p><p>Used on Australia’s east coast. Some states switch to AEDT (UTC+11) in summer; Queensland does not.</p></article>
+      </div>
+    </section>
+
+    <section id="info" class="wrap section" aria-labelledby="infoTitle">
+      <h2 id="infoTitle">About WorldClock</h2>
+      <div class="info">
+        <article id="about"><h3>About</h3><p>WorldClock shows the current time in cities worldwide and converts times between time zones. Everything runs in your browser using the built-in Intl API, so daylight saving time is handled for you.</p></article>
+        <article id="privacy"><h3>Privacy Policy</h3><p>WorldClock does not collect personal data, use accounts or GPS location, and sets no tracking cookies. Your favorites, theme and time format are saved only in your browser (localStorage). <!-- Update this text if you add advertising. --></p></article>
+        <article id="contact"><h3>Contact</h3><p>Questions or city requests? Write to <a href="mailto:hello@example.com">hello@example.com</a>. <!-- Replace with your real address. --></p></article>
+      </div>
+    </section>
+
+    <!-- AD SLOT 3 -->
+    <aside class="ad-slot" id="adBottom" aria-label="Advertisement"><span>[ Advertisement ]</span></aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <div>
+        <p class="logo">🕐 WorldClock</p>
+        <p class="muted">Live local time for cities around the world.</p>
+      </div>
+      <nav aria-label="Footer">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#timezones">Time Zones</a></li>
+          <li><a href="#privacy">Privacy Policy</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+    <p class="wrap muted copy">© <span id="year">2026</span> WorldClock</p>
+  </footer>
+
+  <button id="toTop" class="to-top" type="button" aria-label="Back to top" hidden>↑</button>
+</body>
+</html>
