@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fratm038.github.io/sitemap.xml
